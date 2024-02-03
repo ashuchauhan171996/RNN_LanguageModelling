@@ -21,7 +21,6 @@ class Config(object):
   information parameters. Model objects are passed a Config() object at
   instantiation.
   """
-  ### YOUR CODE HERE
   batch_size = 128
   embed_size = 512
   hidden_size = 512
@@ -33,7 +32,6 @@ class Config(object):
   vocab_size= 0
   weight_decay = 1e-6
   momentum = 0
-  ### END YOUR CODE
   
 
 class RNNLM_Model(nn.Module):
@@ -42,8 +40,6 @@ class RNNLM_Model(nn.Module):
     """Initialize the model."""
     super(RNNLM_Model, self).__init__()
     self.config = config
-
-    ### YOUR CODE HERE
     ### Define the Embedding layer. Hint: check nn.Embedding
 
     self.embedding = nn.Embedding(config.vocab_size, config.embed_size)
@@ -58,7 +54,6 @@ class RNNLM_Model(nn.Module):
     ## Define the input dropout and output dropout.
     self.input_drop = nn.Dropout(p=config.dropout)
     self.output_drop = nn.Dropout(p=config.dropout)
-    ### END YOUR CODE
 
     ## Initialize the weights. 
     weights_init(self)
@@ -90,9 +85,7 @@ class RNNLM_Model(nn.Module):
       inputs: List of length num_steps, each of whose elements should be
               a tensor of shape (batch_size, embed_size).
     """
-    ### YOUR CODE HERE
     input_x = [self.embedding(input_x[:,x]) for x in range(self.config.num_steps)]
-    ### END YOUR CODE
     return input_x
 
   def add_model(self, input_x, initial_state):
@@ -118,7 +111,6 @@ class RNNLM_Model(nn.Module):
     """
     input_x = [self.input_drop(x) for x in input_x]
 
-    ### YOUR CODE HERE
     rnn_outputs = []
     last_state = initial_state
     for inx in input_x:
@@ -126,7 +118,6 @@ class RNNLM_Model(nn.Module):
       b = torch.matmul(inx,self.I)
       last_state = torch.sigmoid(a+b+ self.b1)
       rnn_outputs.append(self.output_drop(last_state))
-    ### END YOUR CODE
     return rnn_outputs, last_state
 
 
@@ -143,12 +134,10 @@ class RNNLM_Model(nn.Module):
       outputs: List of length num_steps, each a tensor of shape
                (batch_size, len(vocab))
     """
-    ### YOUR CODE HERE
     outputs = []
     for h in rnn_outputs:
       out = torch.matmul(h,self.U) + self.b2
       outputs.append(out)
-    ### END YOUR CODE
     return outputs
 
   def init_hidden(self):
@@ -157,9 +146,8 @@ class RNNLM_Model(nn.Module):
           initial state for the RNN. You might find torch.zeros useful.    
         Hint: If you are using GPU, the init_hidden should be attached to cuda.
     """
-    ### YOUR CODE HERE
+
     init_state = torch.zeros((self.config.batch_size, self.config.hidden_size), device='cuda')
-    ### END YOUR CODE
     return init_state
     
 
@@ -245,10 +233,8 @@ def compute_loss(outputs, y, criterion):
   Returns:
     output: A 0-d tensor--averaged loss (scalar)
   """ 
-  ### YOUR CODE HERE
   outputs = torch.stack(outputs, dim=1)
   loss = criterion(outputs.flatten(start_dim=0,end_dim=1),y.flatten())
-  ### END YOUR CODE
   return loss
 
 
