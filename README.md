@@ -1,5 +1,6 @@
 # RNN_LanguageModelling
 Recurrent Neural Network (RNN) for language modeling using Pytorch
+<img width="1046" alt="image" src="https://github.com/ashuchauhan171996/RNN_LanguageModelling/assets/83955120/cfc4f3f3-d24b-4075-b020-dbf7e17d9b14">
 
 ## Problem Statement:
 Implement a recurrent neural network (RNN) for language modeling using Pytorch. The task is to predict word xt+1 given words
